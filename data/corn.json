@@ -5,14 +5,6 @@
       "min": 6.2,
       "max": 6.8
     },
-    "OM_pct": {
-      "min": 3.0,
-      "max": 5.0
-    },
-    "CEC_cmolc_kg": {
-      "min": 12,
-      "max": 25
-    },
     "NO3_N_ppm": {
       "min": 10,
       "max": 25
@@ -49,6 +41,54 @@
       "min": 0.5,
       "max": 1.0
     }
+  },
+  "ideal_targets_depth": {
+    "NO3_N_ppm": [
+      {
+        "depth_top_in": 0,
+        "depth_bottom_in": 6,
+        "min": 15,
+        "max": 30
+      },
+      {
+        "depth_top_in": 6,
+        "depth_bottom_in": 12,
+        "min": 12,
+        "max": 25
+      },
+      {
+        "depth_top_in": 12,
+        "depth_bottom_in": 24,
+        "min": 10,
+        "max": 20
+      },
+      {
+        "depth_top_in": 24,
+        "depth_bottom_in": 48,
+        "min": 8,
+        "max": 15
+      }
+    ],
+    "pH": [
+      {
+        "depth_top_in": 0,
+        "depth_bottom_in": 12,
+        "min": 6.3,
+        "max": 6.8
+      },
+      {
+        "depth_top_in": 12,
+        "depth_bottom_in": 24,
+        "min": 6.2,
+        "max": 6.7
+      },
+      {
+        "depth_top_in": 24,
+        "depth_bottom_in": 48,
+        "min": 6.2,
+        "max": 6.6
+      }
+    ]
   },
   "texture_targets_pct": {
     "sand": 35,
