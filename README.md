@@ -18,7 +18,7 @@ and visualize them in **2D** (matplotlib depth profiles with ideal bands) and **
 
 > Notes: Targets and values are **illustrative** and should be replaced with your local agronomic guidelines.
 
-## Quickstart
+## Run
 
 ```bash
 python3 -m venv .venv
