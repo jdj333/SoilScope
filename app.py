@@ -14,6 +14,98 @@ DATA = os.path.join(BASE, "data")
 CROPS = {"corn":"corn", "alfalfa":"alfalfa"}
 PLOT_PROPS = ["pH","NO3_N_ppm","P_ppm_Olsen","K_ppm","Ca_ppm","Mg_ppm","S_ppm","Zn_ppm","Mn_ppm","B_ppm"]
 
+FRIENDLY = {
+    "pH": "Soil pH",
+    "NO3_N_ppm": "Nitrate-N (ppm)",
+    "P_ppm_Olsen": "Phosphorus, Olsen (ppm)",
+    "K_ppm": "Potassium (ppm)",
+    "Ca_ppm": "Calcium (ppm)",
+    "Mg_ppm": "Magnesium (ppm)",
+    "S_ppm": "Sulfur (ppm)",
+    "Zn_ppm": "Zinc (ppm)",
+    "Mn_ppm": "Manganese (ppm)",
+    "B_ppm": "Boron (ppm)",
+}
+
+# ✅ Verified URLs (open in new tab via HTML anchors):
+DESC = {
+    ("corn","NO3_N_ppm"): (
+        "Nitrogen drives leaf area and grain yield in corn; needs depend on yield potential, soil supply, and losses.",
+        "Fertilizing corn in Minnesota (UMN Extension)",
+        "https://extension.umn.edu/crop-specific-needs/fertilizing-corn-minnesota"
+    ),
+    ("alfalfa","NO3_N_ppm"): (
+        "Established alfalfa does not usually need N fertilizer due to N fixation; focus on pH, K, S, and B.",
+        "Alfalfa Fertilization Strategies (UC ANR 8292, PDF)",
+        "https://alfalfa.ucdavis.edu/sites/g/files/dgvnsk12586/files/media/documents/UCAlfalfa8292Fertilization-reg.pdf"
+    ),
+    ("corn","P_ppm_Olsen"): (
+        "Phosphorus supports early root growth and energy transfer; starter or banded P can aid early vigor on cool soils.",
+        "A2809 Nutrient Application Guidelines (UW) — P",
+        "https://cropsandsoils.extension.wisc.edu/nutrient-application-guidelines-for-field-vegetable-and-fruit-crops-in-wisconsin-a2809/"
+    ),
+    ("alfalfa","P_ppm_Olsen"): (
+        "Adequate P is essential for stand persistence and regrowth; base rates on soil test and removal.",
+        "Fertilizing Alfalfa (Penn State Extension)",
+        "https://extension.psu.edu/fertilizing-alfalfa/"
+    ),
+    ("corn","K_ppm"): (
+        "Potassium regulates water relations and stalk strength; surface stratification is common in no‑till.",
+        "A2809 Nutrient Application Guidelines (UW) — K",
+        "https://cropsandsoils.extension.wisc.edu/nutrient-application-guidelines-for-field-vegetable-and-fruit-crops-in-wisconsin-a2809/"
+    ),
+    ("alfalfa","K_ppm"): (
+        "Alfalfa removes large K in forage; maintain K for persistence and winterhardiness.",
+        "Fertilizing Alfalfa (Penn State Extension)",
+        "https://extension.psu.edu/fertilizing-alfalfa/"
+    ),
+    ("corn","S_ppm"): (
+        "Sulfur deficiency in corn is more common on low‑OM, coarse soils; consider S with N on responsive sites.",
+        "Sulfur Management for Iowa Crop Production (ISU, PDF)",
+        "https://www.agronext.iastate.edu/soilfertility/info/CROP3072.pdf"
+    ),
+    ("alfalfa","S_ppm"): (
+        "Alfalfa often responds to sulfur on low‑S soils; apply based on soil and tissue tests.",
+        "Sulfur for Alfalfa & Forages (UMN Extension)",
+        "https://extension.umn.edu/fertilizing-pastures-and-hay/sulfur-alfalfa-and-forages"
+    ),
+    ("alfalfa","B_ppm"): (
+        "Boron is commonly required for high‑yield alfalfa; monitor to avoid deficiency and toxicity.",
+        "Penn State — Soil Fertility: Forage Crops (Boron guidance in maintenance/pre‑establishment)",
+        "https://extension.psu.edu/soil-fertility-management-for-forage-crops-maintenance/"
+    ),
+    ("corn","pH"): (
+        "Corn performs best around pH 6.0–6.8; lime per soil test to maintain availability and root growth.",
+        "UMN — Growing corn: Nutrient management (links to N and liming resources)",
+        "https://extension.umn.edu/corn/growing-corn"
+    ),
+    ("alfalfa","pH"): (
+        "Alfalfa establishment is sensitive to pH; target ~6.8–7.0 in the topsoil and avoid acidic subsoil.",
+        "Penn State — Soil Fertility for Forage Crops: Pre‑establishment",
+        "https://extension.psu.edu/soil-fertility-management-for-forage-crops-pre-establishment/"
+    ),
+    ("*","Zn_ppm"): (
+        "Zinc is often stratified near the surface; responses are most likely on high‑pH or low‑OM soils.",
+        "UMN — Micro‑ and Secondary Macronutrients (Zn)",
+        "https://extension.umn.edu/nutrient-management/micro-and-secondary-macronutrients"
+    ),
+    ("*","Mn_ppm"): (
+        "Manganese availability rises in acidic soils and drops at high pH; deficiency common on high‑pH organic soils.",
+        "UMN — Micro‑ and Secondary Macronutrients (Mn)",
+        "https://extension.umn.edu/nutrient-management/micro-and-secondary-macronutrients"
+    ),
+    ("*","Ca_ppm"): (
+        "Calcium status ties to pH and CEC/base saturation; most mineral soils are adequate in Ca.",
+        "USDA NRCS — Soil Quality Indicators (Chemical Indicators, PDF)",
+        "https://www.nrcs.usda.gov/sites/default/files/2022-10/chemical_indicators_overview.pdf"
+    ),
+    ("*","Mg_ppm"): (
+        "Magnesium supports chlorophyll and enzymes; balance with K to avoid antagonism.",
+        "A2809 (UW) — Secondary nutrients & K",
+        "https://cropsandsoils.extension.wisc.edu/nutrient-application-guidelines-for-field-vegetable-and-fruit-crops-in-wisconsin-a2809/"
+    )
+}
+
 TYPICAL_RULES = {
     "pH":            ("pH_decline",   {"delta24": -0.1, "delta48": -0.2}),
     "NO3_N_ppm":     ("surface_decay",{"factor0": 1.0, "factor12": 0.75, "factor24": 0.55, "factor36": 0.45, "factor48": 0.35}),
@@ -117,6 +209,20 @@ def depth_conditioned_lines(df: pd.DataFrame, prop: str, ideal_targets_depth: di
             min_line[:] = fallback[prop]["min"]; max_line[:] = fallback[prop]["max"]
     return depth, min_line, max_line
 
+def describe(crop_key: str, prop: str):
+    if (crop_key, prop) in DESC:
+        txt, title, url = DESC[(crop_key, prop)]
+    elif ("*", prop) in DESC:
+        txt, title, url = DESC[("*", prop)]
+    else:
+        title, url = "A2809 Nutrient Application Guidelines (UW)", "https://cropsandsoils.extension.wisc.edu/nutrient-application-guidelines-for-field-vegetable-and-fruit-crops-in-wisconsin-a2809/"
+        txt = f"{FRIENDLY.get(prop, prop)} — see the reference for interpretation and management guidance."
+    crop_label = crop_key.capitalize()
+    prop_label = FRIENDLY.get(prop, prop)
+    # Use HTML anchor to open in new tab
+    md = f"**{prop_label} in {crop_label}.** {txt}  <br><a href='{url}' target='_blank' rel='noopener noreferrer'>➔ {title}</a>"
+    return md
+
 def profile_png(df: pd.DataFrame, prop: str, meta: dict, mode: str):
     fig, ax = plt.subplots(figsize=(5,4), dpi=120)
     series = df[prop].values.copy()
@@ -162,15 +268,17 @@ def make_app():
         table = pn.widgets.DataFrame(layers, name="Layer Table", height=240,
                                      sizing_mode="stretch_width", autosize_mode="fit_viewport")
         header = pn.pane.Markdown("### 2D Profile with **Depth-Conditioned** Min/Max Lines")
-        return pn.Column(pn.Row(pn.Spacer(width=10), sizing_mode="stretch_width"),
-                         pn.Row(pn.Column(header, prof), vol, sizing_mode="stretch_width"),
-                         pn.Row(table, sizing_mode="stretch_width"),
-                         sizing_mode="stretch_width")
+        desc = pn.pane.Markdown(describe(crop, prop), sizing_mode="stretch_width")
+        return pn.Column(
+            pn.Row(pn.Column(header, prof, desc), vol, sizing_mode="stretch_width"),
+            pn.Row(table, sizing_mode="stretch_width"),
+            sizing_mode="stretch_width"
+        )
 
-    title = pn.pane.Markdown("# Soil Profile Viewer v4 (Measured vs Typical Profiles)")
+    title = pn.pane.Markdown("# Soil Profile Viewer v5.1 (Descriptions + Verified Links)")
     controls = pn.Row(crop, prop, mode, sizing_mode="stretch_width")
     return pn.Column(title, controls, view, sizing_mode="stretch_width")
 
 if __name__ == "__main__":
     app = make_app()
-    pn.serve(app, show=True, port=5009, websocket_origin=["localhost:5009","127.0.0.1:5009"])
+    pn.serve(app, show=True, port=5011, websocket_origin=["localhost:5011","127.0.0.1:5011"])
