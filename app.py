@@ -34,21 +34,57 @@ def layers_to_depth_df(layers: pd.DataFrame, step: int = 1):
         out[col] = vals
     return out
 
-def profile_png(df: pd.DataFrame, prop: str, targets: dict):
+def depth_conditioned_lines(df: pd.DataFrame, prop: str, ideal_targets_depth: dict, fallback: dict):
+    """Return arrays for min_line and max_line per depth based on depth-conditioned segments if present;
+       else fall back to global ideal_targets constant lines."""
+    depth = df["depth_in"].values
+    min_line = np.full_like(depth, np.nan, dtype=float)
+    max_line = np.full_like(depth, np.nan, dtype=float)
+
+    segments = (ideal_targets_depth or {}).get(prop, [])
+    if segments:
+        for seg in segments:
+            mask = (depth >= seg["depth_top_in"]) & (depth <= seg["depth_bottom_in"])
+            min_line[mask] = seg["min"]
+            max_line[mask] = seg["max"]
+        # fill any unmapped depth with nearest valid (forward/back fill)
+        if np.isnan(min_line).any():
+            # forward fill then back fill
+            for arr in (min_line, max_line):
+                # simple fill
+                last = np.nan
+                for i in range(len(arr)):
+                    if not np.isnan(arr[i]): last = arr[i]
+                    else: arr[i] = last
+                last = np.nan
+                for i in range(len(arr)-1, -1, -1):
+                    if np.isnan(arr[i]): arr[i] = last
+                    else: last = arr[i]
+    else:
+        if prop in fallback:
+            min_line[:] = fallback[prop]["min"]
+            max_line[:] = fallback[prop]["max"]
+        else:
+            # no targets; return NaNs
+            pass
+    return depth, min_line, max_line
+
+def profile_png(df: pd.DataFrame, prop: str, meta: dict):
     fig, ax = plt.subplots(figsize=(5,4), dpi=120)
-    ax.plot(df[prop], df["depth_in"], linewidth=2)
+    ax.plot(df[prop], df["depth_in"], linewidth=2, label=prop)
     ax.invert_yaxis()
     ax.set_xlabel(prop)
     ax.set_ylabel("Depth (in)")
-    # ideal band
-    if prop in targets:
-        tmin, tmax = targets[prop]["min"], targets[prop]["max"]
-        ax.fill_betweenx(df["depth_in"], tmin, tmax, alpha=0.15)
-        # red min/max vlines
-        ax.axvline(tmin, color="red", linestyle="--", linewidth=1.5, label="Min")
-        ax.axvline(tmax, color="red", linestyle="--", linewidth=1.5, label="Max")
-        ax.legend(loc="best", frameon=False)
+    # build depth-conditioned lines
+    depth, min_line, max_line = depth_conditioned_lines(df, prop, meta.get("ideal_targets_depth"), meta.get("ideal_targets", {}))
+    if np.isfinite(min_line).any() and np.isfinite(max_line).any():
+        # shade between min and max
+        ax.fill_betweenx(depth, min_line, max_line, alpha=0.12, label="Ideal band")
+        # red dashed step-lines
+        ax.plot(min_line, depth, color="red", linestyle="--", linewidth=1.5, label="Min (by depth)")
+        ax.plot(max_line, depth, color="red", linestyle="--", linewidth=1.5, label="Max (by depth)")
     ax.grid(True, linestyle=":")
+    ax.legend(loc="best", frameon=False)
     buf = io.BytesIO()
     fig.tight_layout()
     fig.savefig(buf, format="png")
@@ -77,15 +113,15 @@ def make_app():
     def view(crop, prop):
         meta, layers = load_crop(crop)
         df = layers_to_depth_df(layers, step=1)
-        prof = profile_png(df, prop, meta["ideal_targets"])
+        prof = profile_png(df, prop, meta)
         vol = volume_plot(df, prop)
-        table = pn.widgets.DataFrame(layers, name="Layer Table", height=200)
-        header = pn.pane.Markdown("### 2D Profile with Ideal Band + **Red min/max lines**")
+        table = pn.widgets.DataFrame(layers, name="Layer Table", height=220)
+        header = pn.pane.Markdown("### 2D Profile with **Depth-Conditioned** Min/Max Lines")
         return pn.Column(header, pn.Row(prof, vol), table)
 
-    title = pn.pane.Markdown("# Soil Profile Viewer v2 (with red min/max lines)")
+    title = pn.pane.Markdown("# Soil Profile Viewer v3 (depth-conditioned min/max)")
     return pn.Column(title, pn.Row(crop, prop), view)
 
 if __name__ == "__main__":
     app = make_app()
-    pn.serve(app, show=True, port=5007)
+    pn.serve(app, show=True, port=5008)

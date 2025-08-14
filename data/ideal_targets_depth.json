@@ -1,0 +1,8 @@
+"ideal_targets_depth": {
+  "NO3_N_ppm": [
+    {"depth_top_in": 0, "depth_bottom_in": 6,  "min": 15, "max": 30},
+    {"depth_top_in": 6, "depth_bottom_in": 12, "min": 12, "max": 25},
+    {"depth_top_in": 12, "depth_bottom_in": 24,"min": 10, "max": 20},
+    {"depth_top_in": 24, "depth_bottom_in": 48,"min": 8,  "max": 15}
+  ]
+}
