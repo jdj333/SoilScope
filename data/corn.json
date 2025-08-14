@@ -1,0 +1,166 @@
+{
+  "crop": "dent_corn",
+  "ideal_targets": {
+    "pH": {
+      "min": 6.2,
+      "max": 6.8
+    },
+    "OM_pct": {
+      "min": 3.0,
+      "max": 5.0
+    },
+    "CEC_cmolc_kg": {
+      "min": 12,
+      "max": 25
+    },
+    "NO3_N_ppm": {
+      "min": 10,
+      "max": 25
+    },
+    "P_ppm_Olsen": {
+      "min": 15,
+      "max": 25
+    },
+    "K_ppm": {
+      "min": 150,
+      "max": 250
+    },
+    "Ca_ppm": {
+      "min": 1500,
+      "max": 3000
+    },
+    "Mg_ppm": {
+      "min": 120,
+      "max": 240
+    },
+    "S_ppm": {
+      "min": 10,
+      "max": 20
+    },
+    "Zn_ppm": {
+      "min": 1.0,
+      "max": 3.0
+    },
+    "Mn_ppm": {
+      "min": 5.0,
+      "max": 20.0
+    },
+    "B_ppm": {
+      "min": 0.5,
+      "max": 1.0
+    }
+  },
+  "texture_targets_pct": {
+    "sand": 35,
+    "silt": 45,
+    "clay": 20
+  },
+  "bacteria_targets": [
+    "Azospirillum",
+    "Bacillus",
+    "Pseudomonas",
+    "Arthrobacter"
+  ],
+  "sample_profile_layers": [
+    {
+      "layer_id": 1,
+      "depth_top_in": 0,
+      "depth_bottom_in": 6,
+      "pH": 6.5,
+      "OM_pct": 3.1,
+      "CEC_cmolc_kg": 15,
+      "NO3_N_ppm": 18,
+      "P_ppm_Olsen": 16,
+      "K_ppm": 170,
+      "Ca_ppm": 2200,
+      "Mg_ppm": 160,
+      "S_ppm": 12,
+      "Zn_ppm": 1.1,
+      "Mn_ppm": 8,
+      "B_ppm": 0.6,
+      "sand_pct": 35,
+      "silt_pct": 44,
+      "clay_pct": 21
+    },
+    {
+      "layer_id": 2,
+      "depth_top_in": 6,
+      "depth_bottom_in": 12,
+      "pH": 6.4,
+      "OM_pct": 2.8,
+      "CEC_cmolc_kg": 14,
+      "NO3_N_ppm": 14,
+      "P_ppm_Olsen": 14,
+      "K_ppm": 165,
+      "Ca_ppm": 2100,
+      "Mg_ppm": 150,
+      "S_ppm": 11,
+      "Zn_ppm": 1.0,
+      "Mn_ppm": 7.5,
+      "B_ppm": 0.55,
+      "sand_pct": 36,
+      "silt_pct": 44,
+      "clay_pct": 20
+    },
+    {
+      "layer_id": 3,
+      "depth_top_in": 12,
+      "depth_bottom_in": 24,
+      "pH": 6.3,
+      "OM_pct": 2.0,
+      "CEC_cmolc_kg": 13,
+      "NO3_N_ppm": 10,
+      "P_ppm_Olsen": 12,
+      "K_ppm": 160,
+      "Ca_ppm": 2000,
+      "Mg_ppm": 145,
+      "S_ppm": 10,
+      "Zn_ppm": 0.9,
+      "Mn_ppm": 7.0,
+      "B_ppm": 0.5,
+      "sand_pct": 37,
+      "silt_pct": 45,
+      "clay_pct": 18
+    },
+    {
+      "layer_id": 4,
+      "depth_top_in": 24,
+      "depth_bottom_in": 36,
+      "pH": 6.2,
+      "OM_pct": 1.6,
+      "CEC_cmolc_kg": 12,
+      "NO3_N_ppm": 8,
+      "P_ppm_Olsen": 10,
+      "K_ppm": 155,
+      "Ca_ppm": 1950,
+      "Mg_ppm": 140,
+      "S_ppm": 9,
+      "Zn_ppm": 0.8,
+      "Mn_ppm": 6.5,
+      "B_ppm": 0.48,
+      "sand_pct": 38,
+      "silt_pct": 45,
+      "clay_pct": 17
+    },
+    {
+      "layer_id": 5,
+      "depth_top_in": 36,
+      "depth_bottom_in": 48,
+      "pH": 6.2,
+      "OM_pct": 1.2,
+      "CEC_cmolc_kg": 12,
+      "NO3_N_ppm": 6,
+      "P_ppm_Olsen": 8,
+      "K_ppm": 150,
+      "Ca_ppm": 1900,
+      "Mg_ppm": 135,
+      "S_ppm": 8,
+      "Zn_ppm": 0.7,
+      "Mn_ppm": 6.0,
+      "B_ppm": 0.45,
+      "sand_pct": 39,
+      "silt_pct": 46,
+      "clay_pct": 15
+    }
+  ]
+}
