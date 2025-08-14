@@ -60,6 +60,18 @@ Each JSON file contains:
 The demo builds a simple rectangular volume by **replicating each depth's scalar across X and Y**. If you have spatial grids,
 replace `make_volume` with your `nx, ny` raster per depth for a true 3D block model.
 
+## References
+
+1. **Corn nutrient sufficiency ranges** — Iowa State University Extension and Outreach. *Soil Fertility Interpretations for Corn.* PM 1688 (updated 2021). Available at: https://store.extension.iastate.edu/Product/pm1688-pdf  
+2. **Corn & alfalfa micronutrient guidelines** — University of Minnesota Extension. *Nutrient Management for Commercial Corn Production.* https://extension.umn.edu/crop-specific-needs/nutrient-management-corn  
+3. **Alfalfa nutrient recommendations** — Penn State Extension. *Nutrient Management for Forage Crops: Alfalfa.* https://extension.psu.edu/nutrient-management-for-forage-crops-alfalfa  
+4. **Soil test interpretation for phosphorus and potassium** — University of Wisconsin–Madison Division of Extension. *Nutrient Application Guidelines for Field, Vegetable, and Fruit Crops in Wisconsin (A2809).* https://extension.soils.wisc.edu/a2809  
+5. **Boron and micronutrients for alfalfa** — University of California Agriculture & Natural Resources. *Alfalfa Fertility Management.* https://alfalfa.ucdavis.edu/+fertility.html  
+6. **CEC, pH, and OM guidelines** — USDA NRCS. *Soil Quality Indicators: Cation Exchange Capacity.* https://www.nrcs.usda.gov/resources/education-and-outreach/soil-quality-indicators/cation-exchange-capacity  
+7. **Soil texture recommendations for irrigated corn and alfalfa** — USDA NRCS Soil Health Technical Note No. 430–3. *Soil Texture and Water.* https://www.nrcs.usda.gov/sites/default/files/2022-10/Soil%20Texture%20and%20Water.pdf  
+
+These sources outline the commonly accepted target ranges for macronutrients, micronutrients, pH, cation exchange capacity, organic matter, and soil texture for dent corn and alfalfa. The `corn.json` and `alfalfa.json` files in this app were defined using values synthesized from these recommendations for **irrigated production systems in temperate climates**.
+
 ## License
 
 MIT (example code).
